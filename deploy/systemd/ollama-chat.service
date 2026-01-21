@@ -1,0 +1,33 @@
+[Unit]
+Description=Ollama AD Chat App
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/ollama-ad-chat
+EnvironmentFile=/etc/ollama-ad-chat/ollama-ad-chat.env
+User=ollama-chat
+Group=ollama-chat
+ExecStart=/opt/ollama-ad-chat/.venv/bin/uvicorn app.main:app --host ${APP_HOST} --port ${APP_PORT}
+Restart=on-failure
+RestartSec=2
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+
+[Install]
+WantedBy=multi-user.target

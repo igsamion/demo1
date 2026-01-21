@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <title>Chat</title>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <div>
+        <h1>Ollama Chat</h1>
+        <p class="muted">Angemeldet als {{ user.display_name or user.username }}</p>
+      </div>
+      <form method="post" action="/logout">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">Logout</button>
+      </form>
+    </header>
+    <section id="chat" class="chat">
+      {% for message in messages %}
+        <div class="message {{ message.role }}">
+          <span class="role">{{ message.role }}</span>
+          <p>{{ message.content }}</p>
+        </div>
+      {% endfor %}
+    </section>
+    <form id="chat-form" class="chat-form">
+      <input type="text" id="prompt" name="prompt" placeholder="Deine Nachricht" required />
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <button type="submit">Senden</button>
+    </form>
+    <form method="post" action="/clear">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <button type="submit" class="secondary">Clear Chat</button>
+    </form>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
